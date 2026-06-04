@@ -1,0 +1,42 @@
+# Kiosk Goblin - Dashboard Configuration
+title: "👹 KOBLIN KIOSK v1.0.0"
+refresh_interval: 10 # auto refresh interval in seconds for high interactivity in demo
+theme: "cyberpunk-dark"
+
+# Datasource configuration (type: mock or json)
+datasource:
+  type: "mock"
+
+# Grid Layout. Maximum column width is 12.
+layout:
+  - row:
+      - plugin: "ml_training"
+        width: 12
+  - row:
+      - plugin: "dataset_status"
+        width: 6
+      - plugin: "system_metrics"
+        width: 6
+  - row:
+      - plugin: "media_preview"
+        width: 12
+  - row:
+      - plugin: "event_log"
+        width: 12
+
+# Specific Plugin Parameters
+panels:
+  ml_training:
+    chart_height: 220
+    accent_color: "#00f2fe"
+  dataset_status:
+    chart_height: 180
+    accent_color: "#a855f7"
+  system_metrics:
+    accent_color: "#10b981"
+  media_preview:
+    height: 300
+    accent_color: "#f59e0b"
+  event_log:
+    height: 150
+    accent_color: "#f43f5e"

@@ -1,0 +1,11 @@
+{
+  "logs": [
+    {"timestamp": "17:01:00", "level": "INFO", "message": "System check passed: 4 GPUs detected."},
+    {"timestamp": "17:01:05", "level": "INFO", "message": "Docker container 'goblin-engine' successfully started."},
+    {"timestamp": "17:02:15", "level": "WARN", "message": "Disk capacity at 74.2% (threshold: 80%)."},
+    {"timestamp": "17:03:00", "level": "INFO", "message": "Synchronizing dataset splits with local storage..."},
+    {"timestamp": "17:04:12", "level": "INFO", "message": "Dataset sync complete. Loaded 142k images."},
+    {"timestamp": "17:05:01", "level": "INFO", "message": "Offline JSON source configuration loaded successfully."},
+    {"timestamp": "17:05:30", "level": "WARN", "message": "Fan speed increased to 85% on GPU-0 (Temp: 68°C)."}
+  ]
+}

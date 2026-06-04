@@ -1,0 +1,18 @@
+{
+  "total_images": 142050,
+  "classes": ["Robot-Arm", "Conveyor-Belt", "Safety-Helmet", "Pallet", "Forklift"],
+  "split": {
+    "train": 99435,
+    "val": 28410,
+    "test": 14205
+  },
+  "class_distribution": {
+    "Robot-Arm": 35400,
+    "Conveyor-Belt": 28100,
+    "Safety-Helmet": 42050,
+    "Pallet": 21500,
+    "Forklift": 15000
+  },
+  "labeled_ratio": 98.4,
+  "recent_adds_today": 450
+}
