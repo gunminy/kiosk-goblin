@@ -1,32 +1,33 @@
 import plotly.graph_objects as go
 
-# Custom color palette for a beautiful cyberpunk/neon layout
+# Monochrome matrix-green scale
 THEME_COLORS = {
-    'primary': '#00f2fe',      # Neon Blue
-    'secondary': '#4facfe',    # Sky Blue
-    'success': '#10b981',      # Emerald Green
-    'warning': '#f59e0b',      # Golden Amber
-    'danger': '#f43f5e',       # Rose/Red
-    'purple': '#a855f7',       # Electric Purple
-    'orange': '#f97316',       # Intense Orange
-    'bg': 'rgba(11, 15, 25, 0.6)', # Card background alpha
+    'primary': '#00ff41',      # Classic Matrix green
+    'secondary': '#00cc33',    # Standard green
+    'success': '#00ff66',      # Neon light green
+    'warning': '#008f11',      # Dark Matrix green
+    'danger': '#ff3333',       # Warning/Error red (kept minimal)
+    'purple': '#005500',       # Very dark green
+    'orange': '#00aa00',       # Mid dark green
+    'bg': 'rgba(0, 0, 0, 0)',
 }
 
-def apply_dark_theme(fig, height=250):
+def apply_dark_theme(fig, height=250, width=None):
     """
-    Applies the custom Kiosk dark theme to any Plotly figure.
-    Sets clean grid lines, transparent backgrounds, and neon-friendly colors.
+    Applies the Matrix dark terminal theme to Plotly figures.
+    Optimized for container scaling (autosize=True).
     """
-    fig.update_layout(
+    layout_args = dict(
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         font=dict(
-            family="'Inter', 'Outfit', sans-serif",
-            color='#94a3b8',
+            family="'Fira Code', 'Courier New', monospace",
+            color='#00ff41',
             size=11
         ),
         margin=dict(l=10, r=10, t=35, b=10),
         height=height,
+        autosize=True,  # Let Plotly handle internal resizing smoothly
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -36,29 +37,34 @@ def apply_dark_theme(fig, height=250):
             font=dict(size=10)
         ),
         hoverlabel=dict(
-            bgcolor="#1e293b",
+            bgcolor="#000000",
             font_size=12,
-            font_family="'Fira Code', monospace"
+            font_family="'Fira Code', monospace",
+            font_color="#00ff41",
+            bordercolor="rgba(0, 255, 65, 0.4)"
         ),
-        dragmode=False # Disable drag to zoom for kiosk usage
+        dragmode=False
     )
     
-    # Configure axes if present
+    if width is not None:
+        layout_args['width'] = width
+        
+    fig.update_layout(**layout_args)
+    
+    # Configure axes with subtle green grid lines
     fig.update_xaxes(
         showgrid=True,
-        gridcolor='rgba(255, 255, 255, 0.05)',
+        gridcolor='rgba(0, 255, 65, 0.05)',
         zeroline=False,
-        tickfont=dict(color='#64748b'),
-        linecolor='rgba(255, 255, 255, 0.1)'
+        tickfont=dict(color='#008f11'),
+        linecolor='rgba(0, 255, 65, 0.2)'
     )
     fig.update_yaxes(
         showgrid=True,
-        gridcolor='rgba(255, 255, 255, 0.05)',
+        gridcolor='rgba(0, 255, 65, 0.05)',
         zeroline=False,
-        tickfont=dict(color='#64748b'),
-        linecolor='rgba(255, 255, 255, 0.1)'
+        tickfont=dict(color='#008f11'),
+        linecolor='rgba(0, 255, 65, 0.2)'
     )
     
-    # Hide modebar completely for kiosk presentation
-    fig.show = lambda *args, **kwargs: None # Mocking just in case
     return fig

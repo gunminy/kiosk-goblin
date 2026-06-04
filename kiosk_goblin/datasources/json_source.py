@@ -89,3 +89,25 @@ class JSONDataSource:
         ]
         data = self._read_json("events.json", {"logs": fallback})
         return data.get("logs", fallback)
+
+    def get_weather_status(self) -> dict:
+        """Reads weather metrics from JSON configuration fallback."""
+        fallback = {
+            "location": "SEOUL, KR",
+            "condition": "OVERCAST_MATRIX",
+            "temp": 19.8,
+            "humidity": 62,
+            "wind_speed": "3.1 m/s",
+            "air_quality": "MODERATE (AQI: 54)"
+        }
+        return self._read_json("weather.json", fallback)
+
+    def get_today_tasks(self) -> list:
+        """Reads daily tasks list from JSON fallback."""
+        fallback = [
+            {"time": "09:00", "task": "Database Integrity Check", "status": "SUCCESS"},
+            {"time": "12:00", "task": "Standard Dataset Validation Check", "status": "SUCCESS"},
+            {"time": "18:00", "task": "Automatic Backups Sync Run", "status": "PENDING"}
+        ]
+        data = self._read_json("tasks.json", {"tasks": fallback})
+        return data.get("tasks", fallback)

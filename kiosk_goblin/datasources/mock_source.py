@@ -170,3 +170,27 @@ class MockDataSource:
         self.update_simulations()
         # Return logs copy, reversed so newest are at the bottom or top depending on renderer
         return list(st.session_state.mock_logs)
+
+    def get_weather_status(self):
+        """Returns mock weather data."""
+        self.update_simulations()
+        # Slightly fluctuate mock temperature
+        t_offset = random.uniform(-0.3, 0.3)
+        return {
+            "location": "SEOUL, KR",
+            "condition": "SECURE_MATRIX_SKY",
+            "temp": round(21.2 + t_offset, 1),
+            "humidity": 58,
+            "wind_speed": "2.4 m/s",
+            "air_quality": "EXCELLENT (AQI: 24)"
+        }
+
+    def get_today_tasks(self):
+        """Returns daily system tasks & schedules."""
+        return [
+            {"time": "09:00", "task": "Database Integrity Check", "status": "SUCCESS"},
+            {"time": "11:30", "task": "Validate Dataset Splits", "status": "SUCCESS"},
+            {"time": "14:15", "task": "Sync Weights with WandB", "status": "SUCCESS"},
+            {"time": "17:50", "task": "ML Run: Validation Batch", "status": "ACTIVE"},
+            {"time": "21:00", "task": "Automated Backups Pipeline", "status": "PENDING"}
+        ]

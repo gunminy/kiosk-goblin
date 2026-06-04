@@ -2,10 +2,12 @@ import streamlit as st
 
 def inject_kiosk_theme():
     """
-    Injects custom CSS to style the Streamlit app for a 1080x1920 Kiosk setup.
-    Hides standard Streamlit decorations, sets a dark theme, and creates custom glow styles.
+    Injects custom CSS to style the Streamlit app with a "Matrix terminal" theme.
+    Uses pure black/deep green backgrounds, neon green text, and monospace fonts.
+    Suppresses Streamlit's running status spinners to make refreshes seamless.
+    Centering Plotly layouts removes asymmetrical margin gaps.
     """
-    kiosk_css = """
+    matrix_css = """
     <style>
         /* Hide Streamlit elements */
         #MainMenu {visibility: hidden;}
@@ -13,95 +15,91 @@ def inject_kiosk_theme():
         header {visibility: hidden;}
         .stDeployButton {display:none;}
         
+        /* Hide running spinners and top decoration lines to prevent refresh flickering */
+        .stStatusWidget, [data-testid="stStatusWidget"] {display: none !important;}
+        div[data-testid="stDecoration"] {display: none !important;}
+        .stSpinner {display: none !important;}
+        
+        /* Center-align Plotly charts within containers to distribute margins evenly */
+        .stPlotlyChart {
+            display: flex !important;
+            justify-content: center !important;
+            width: 100% !important;
+        }
+        
         /* Disable scrollbars on the main body for standard kiosk layout */
         body {
             overflow: hidden;
-            background-color: #0b0f19;
-            color: #e2e8f0;
-            font-family: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #000000;
+            color: #00ff41;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
         }
 
-        /* Adjust main container padding to make it tight and kiosk-friendly */
+        /* Adjust main container padding - reduced side padding to let charts bleed to edges */
         .block-container {
-            padding-top: 1.5rem !important;
-            padding-bottom: 1.5rem !important;
-            padding-left: 1.5rem !important;
-            padding-right: 1.5rem !important;
+            padding-top: 0.8rem !important;
+            padding-bottom: 0.8rem !important;
+            padding-left: 0.8rem !important;
+            padding-right: 0.8rem !important;
             max-width: 100% !important;
         }
 
-        /* Glassmorphism Panel Container */
+        /* Matrix terminal card style */
         .kiosk-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            background: rgba(0, 15, 3, 0.4);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 4px;
+            padding: 1.2rem;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.05);
+            transition: all 0.2s ease;
         }
         
         .kiosk-card:hover {
-            border: 1px solid rgba(0, 242, 254, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 242, 254, 0.15);
-        }
-
-        /* Title styling with Neon glow */
-        .kiosk-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            filter: drop-shadow(0px 2px 8px rgba(0, 242, 254, 0.3));
+            border: 1px solid rgba(0, 255, 65, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.25);
         }
 
         /* Terminal Console style for logs */
         .terminal-box {
-            background-color: #060913;
-            border-left: 4px solid #f43f5e;
-            border-radius: 8px;
+            background-color: #000000;
+            border-left: 3px solid #00ff41;
+            border-radius: 4px;
             font-family: 'Fira Code', 'Courier New', Courier, monospace;
             padding: 1rem;
-            color: #38bdf8;
+            color: #00ff41;
             max-height: 280px;
             overflow-y: auto;
             font-size: 0.85rem;
             line-height: 1.4;
-            border: 1px solid rgba(244, 63, 94, 0.2);
+            border: 1px solid rgba(0, 255, 65, 0.2);
         }
 
         /* Scrollbar customizing */
         .terminal-box::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
         }
         .terminal-box::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
+            background: rgba(0, 0, 0, 0.9);
         }
         .terminal-box::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
+            background: rgba(0, 255, 65, 0.3);
+            border-radius: 2px;
         }
 
-        /* Badge design */
+        /* Monochrome green badges */
         .badge {
             display: inline-block;
-            padding: 0.2rem 0.6rem;
-            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.7rem;
             font-weight: bold;
-            border-radius: 9999px;
+            border-radius: 2px;
             text-transform: uppercase;
         }
-        .badge-success { background-color: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .badge-warning { background-color: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
-        .badge-danger { background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
-        .badge-info { background-color: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.4); }
+        .badge-success { background-color: rgba(0, 255, 65, 0.15); color: #00ff41; border: 1px solid rgba(0, 255, 65, 0.4); }
+        .badge-warning { background-color: rgba(0, 150, 45, 0.15); color: #00cc33; border: 1px solid rgba(0, 150, 45, 0.4); }
+        .badge-danger { background-color: rgba(255, 0, 0, 0.1); color: #ff3333; border: 1px solid rgba(255, 0, 0, 0.3); }
+        .badge-info { background-color: rgba(0, 100, 20, 0.15); color: #009922; border: 1px solid rgba(0, 100, 20, 0.3); }
     </style>
     """
-    st.markdown(kiosk_css, unsafe_allow_html=True)
+    st.markdown(matrix_css, unsafe_allow_html=True)
